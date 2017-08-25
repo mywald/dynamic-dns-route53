@@ -1,0 +1,16 @@
+dyndns:
+  aws:
+    access-key:
+    secret-key:
+    region: eu-central-1
+
+  route53:
+    zone-id: Z123445
+    domain: example.com
+    ttl: 60
+
+  subdomains:
+    -
+      subdomain: suedliche
+      secret: abc
+

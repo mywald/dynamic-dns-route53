@@ -1,29 +1,43 @@
 package de.mywald.dyndns.webinterface;
 
-import de.mywald.dyndns.domain.IPAdress;
+import de.mywald.dyndns.domain.IPAddress;
 import de.mywald.dyndns.domain.Secret;
 import de.mywald.dyndns.domain.Subdomain;
+import de.mywald.dyndns.usecases.CheckPermissionUseCase;
 import de.mywald.dyndns.usecases.UpdateIpUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(path = "/app")
 public class WebInterface {
 
+    private final CheckPermissionUseCase checkPermissionUseCase;
     private final UpdateIpUseCase updateIpUseCase;
 
     @Autowired
-    public WebInterface(UpdateIpUseCase updateIpUseCase) {
+    public WebInterface(CheckPermissionUseCase checkPermissionUseCase, UpdateIpUseCase updateIpUseCase) {
+        this.checkPermissionUseCase = checkPermissionUseCase;
         this.updateIpUseCase = updateIpUseCase;
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/update/{subdomain}")
-    public String updateIp(@PathVariable("subdomain") String subdomain,
-                         @RequestAttribute("secret") String secret,
-                         @RequestAttribute("ip") String ip) {
+    public ResponseEntity<String> updateIp(@PathVariable("subdomain") String subdomainString,
+                                           @RequestParam("secret") String secretString,
+                                           @RequestParam("ip") String ipString) {
 
-        updateIpUseCase.updateIp(new Secret(secret), new Subdomain(subdomain), new IPAdress(ip));
-        return "OK";
+        Subdomain subdomain = new Subdomain(subdomainString);
+        Secret secret = new Secret(secretString);
+        IPAddress ip = new IPAddress(ipString);
+        if (checkPermissionUseCase.hasPermission(subdomain, secret)) {
+            updateIpUseCase.updateIp(secret, subdomain, ip);
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        }
     }
 }

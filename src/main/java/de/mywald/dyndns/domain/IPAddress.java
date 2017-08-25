@@ -1,9 +1,9 @@
 package de.mywald.dyndns.domain;
 
-public class IPAdress {
+public class IPAddress {
     private String value;
 
-    public IPAdress(String value) {
+    public IPAddress(String value) {
         this.value = value;
     }
 
@@ -17,9 +17,9 @@ public class IPAdress {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IPAdress ipAdress = (IPAdress) o;
+        IPAddress ipAddress = (IPAddress) o;
 
-        return value.equals(ipAdress.value);
+        return value.equals(ipAddress.value);
     }
 
     @Override
