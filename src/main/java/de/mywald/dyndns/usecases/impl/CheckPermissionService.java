@@ -16,7 +16,7 @@ class CheckPermissionService implements CheckPermissionUseCase {
     @Override
     public boolean hasPermission(Subdomain subdomain, Secret secret) {
         return subdomainPermissions.getSubdomains().stream().anyMatch(
-                s -> s.getSecret().equals(secret.toString()) &&
-                        s.getSubdomain().equals(subdomain.toString()));
+                s -> s.getSecret().equals(secret) &&
+                        s.getSubdomain().equals(subdomain));
     }
 }

@@ -18,23 +18,23 @@ public class SubdomainPermissions {
 
     public static class SubdomainPermission {
 
-        private String subdomain;
+        private Subdomain subdomain;
 
-        private String secret;
+        private Secret secret;
 
-        public String getSecret() {
+        public Secret getSecret() {
             return secret;
         }
 
-        public void setSecret(String secret) {
+        public void setSecret(Secret secret) {
             this.secret = secret;
         }
 
-        public String getSubdomain() {
+        public Subdomain getSubdomain() {
             return subdomain;
         }
 
-        public void setSubdomain(String subdomain) {
+        public void setSubdomain(Subdomain subdomain) {
             this.subdomain = subdomain;
         }
     }
